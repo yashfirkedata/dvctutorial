@@ -1,0 +1,44 @@
+conda create -p venv python=3.9 -y
+conda activate ./venv
+pip install -r requirements.txt
+python test.py
+dvc init 
+git status  #you get .dvc folder already added in staging phase
+git add data/data.csv
+
+# add new entries to data.csv then save and then command
+dvc add data/data.csv
+# you will see change in id in data.csv.dvc
+
+# under .dvc/cache you can get all versions of data
+
+# how to track? we only tract data.csv.dvc
+# now clear all the cache 
+dvc add data/data.csv.dvc
+git add data/data.csv.dvc
+git commit -m "first version"
+# add data
+dvc add data/data.csv.dvc
+git add data/data.csv.dvc
+git commit -m "second version"
+# add data
+dvc add data/data.csv.dvc
+git add data/data.csv.dvc
+git commit -m "third version"
+
+git log
+# copy commit id of the data version u want
+q # to exit 
+git checkout ae1128f3a4b9b396daed5afa1ea50155f10a8ee5
+dvc checkout 
+# you will be in your required version of data
+
+# to connect with remote repository
+dvc remote add -d <repository-name> <path>
+# if ure using local repo give local path else u can use aws S3 for management
+dvc push 
+# eg:
+dvc remote add -d remote_storage /home/yashfirke/dvctutorial/remote
+dvc push 
+# then try from line 15 again data tracking 
+# then everytime you do dvc push, it will track the data in remote storage 
