@@ -57,4 +57,4 @@ dvc push
 # now you can track the changes in the pipeline
 # you can see in runs folder the pipeline versioning
 dvc dag # directed acyclic graph 
-# will show the pipeline in the form of graph and show dependencies
+# will show the pipeline in the form of graph and show dependencies 
