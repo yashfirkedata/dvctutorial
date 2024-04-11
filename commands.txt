@@ -1,0 +1,60 @@
+conda create -p venv python=3.9 -y
+conda activate ./venv
+pip install -r requirements.txt
+python test.py
+dvc init 
+git status  #you get .dvc folder already added in staging phase
+git add data/data.csv
+
+# add new entries to data.csv then save and then command
+dvc add data/data.csv
+# you will see change in id in data.csv.dvc
+
+# under .dvc/cache you can get all versions of data
+
+# how to track? we only tract data.csv.dvc
+# now clear all the cache 
+dvc add data/data.csv.dvc
+git add data/data.csv.dvc
+git commit -m "first version"
+# add data
+dvc add data/data.csv.dvc
+git add data/data.csv.dvc
+git commit -m "second version"
+# add data
+dvc add data/data.csv.dvc
+git add data/data.csv.dvc
+git commit -m "third version"
+
+git log
+# copy commit id of the data version u want
+q # to exit 
+git checkout ae1128f3a4b9b396daed5afa1ea50155f10a8ee5
+dvc checkout 
+# you will be in your required version of data
+
+# to connect with remote repository
+dvc remote add -d <repository-name> <path>
+# if ure using local repo give local path else u can use aws S3 for management
+dvc push 
+# eg:
+dvc remote add -d remote_storage /home/yashfirke/dvctutorial/remote
+dvc push 
+# then try from line 15 again data tracking 
+# then everytime you do dvc push, it will track the data in remote storage 
+
+
+# dvc.yaml will help you to track the data and the code together => dvc reproducibility
+# create two stages in dvc.yaml stage_01.py and stage_02.py
+# write the code in the stages
+# then in dvc.yaml write the stages and dependencies
+# then run dvc repro
+# it will run the stages in the order and will track the data and code together
+# it will create dvc.lock file which will have the hash of the data and code
+# we can do pipeline versoning also as you know, in out mlops project structure, the stages like data_ingesstion, data_preprocessing, model_training, model_evaluation are highly dependent on each other.
+# so we can create a pipeline in dvc.yaml and run dvc repro to run the pipeline
+# now make changes in stage_02.0y and run dvc repro you will see changes in dvc.lock file
+# now you can track the changes in the pipeline
+# you can see in runs folder the pipeline versioning
+dvc dag # directed acyclic graph 
+# will show the pipeline in the form of graph and show dependencies
