@@ -42,3 +42,19 @@ dvc remote add -d remote_storage /home/yashfirke/dvctutorial/remote
 dvc push 
 # then try from line 15 again data tracking 
 # then everytime you do dvc push, it will track the data in remote storage 
+
+
+# dvc.yaml will help you to track the data and the code together => dvc reproducibility
+# create two stages in dvc.yaml stage_01.py and stage_02.py
+# write the code in the stages
+# then in dvc.yaml write the stages and dependencies
+# then run dvc repro
+# it will run the stages in the order and will track the data and code together
+# it will create dvc.lock file which will have the hash of the data and code
+# we can do pipeline versoning also as you know, in out mlops project structure, the stages like data_ingesstion, data_preprocessing, model_training, model_evaluation are highly dependent on each other.
+# so we can create a pipeline in dvc.yaml and run dvc repro to run the pipeline
+# now make changes in stage_02.0y and run dvc repro you will see changes in dvc.lock file
+# now you can track the changes in the pipeline
+# you can see in runs folder the pipeline versioning
+dvc dag # directed acyclic graph 
+# will show the pipeline in the form of graph and show dependencies
